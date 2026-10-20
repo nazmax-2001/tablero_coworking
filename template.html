@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coworking MiradorTEC</title>
+<link rel="icon" href="__LOGO__">
+<script>__PLOTLY__</script>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f3f4f4; --surface: #fcfcfb; --border: #e2e4e4;
+    --text: #0b0b0b; --text-2: #4f5353; --text-3: #868b8b; --grid: #eaecec;
+    --brand: #00cbcc; --mark: #00a3a6; --chip-on: #00787a;
+    --st-ren: #00a3a6; --st-lib: #eb6834; --tint: 24%;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #101212; --surface: #191b1b; --border: #2c3030;
+      --text: #eef0ef; --text-2: #bcc2c1; --text-3: #8a9190; --grid: #262a2a;
+      --mark: #00a8aa; --chip-on: #00a8aa; --st-ren: #00a8aa; --st-lib: #d95926; --tint: 34%;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #101212; --surface: #191b1b; --border: #2c3030;
+    --text: #eef0ef; --text-2: #bcc2c1; --text-3: #8a9190; --grid: #262a2a;
+    --mark: #00a8aa; --chip-on: #00a8aa; --st-ren: #00a8aa; --st-lib: #d95926; --tint: 34%;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .marca { background: #000; color: #fff; }
+  .marca .in { max-width: 1200px; margin: 0 auto; padding: 22px 16px 20px;
+               display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; }
+  .marca img { height: 34px; width: auto; display: block; }
+  .marca .tit { text-align: right; }
+  .marca h1 { margin: 0; font-size: 20px; font-weight: 600; }
+  .marca .sub { color: #9fb3b3; font-size: 13px; margin-top: 2px; }
+  .marca .linea { height: 3px; background: var(--brand); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 18px 16px 40px; }
+
+  .filtros { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 14px; }
+  .filtros .etq { color: var(--text-2); font-size: 12.5px; margin-right: 2px; }
+  .chip { border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    padding: 5px 12px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; }
+  .chip:hover { border-color: var(--mark); }
+  .chip[aria-pressed="true"] { background: var(--chip-on); border-color: var(--chip-on); color: #fff; }
+  .chip .pt { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+  .chip[aria-pressed="true"] .pt { box-shadow: 0 0 0 1.5px #fff; }
+  .chip:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 12px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-width: 0; }
+  .kpi { border-top: 3px solid var(--mark); }
+  .kpi.lib { border-top-color: var(--st-lib); }
+  .kpi .lbl { color: var(--text-2); font-size: 12.5px; }
+  .kpi .val { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .val small { font-size: 13px; font-weight: 500; color: var(--text-2); margin-left: 3px; }
+  .kpi .nota { color: var(--text-3); font-size: 12px; margin-top: 2px; }
+
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+  .c5 { grid-column: span 5; } .c7 { grid-column: span 7; } .c12 { grid-column: span 12; }
+  .card h2 { font-size: 15px; margin: 0; }
+  .card .sub { color: var(--text-2); font-size: 12.5px; margin: 2px 0 12px; }
+  .leyenda { display: flex; gap: 16px; font-size: 12.5px; color: var(--text-2); margin-bottom: 10px; }
+  .leyenda span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px;
+    background: color-mix(in srgb, var(--c) var(--tint), var(--surface)); border-top: 3px solid var(--c); box-sizing: border-box; }
+
+  .asientos { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 5px; }
+  .asiento { border-top: 4px solid var(--c); border-radius: 5px; padding: 6px 7px 5px; min-width: 0;
+    background: color-mix(in srgb, var(--c) var(--tint), var(--surface)); }
+  .asiento .u { display: block; font-size: 11.5px; font-weight: 600; }
+  .asiento .i { display: block; font-size: 11.5px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .asiento.off { opacity: .22; }
+  .chart { width: 100%; height: 300px; }
+
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13px; }
+  th, td { padding: 7px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-2); font-weight: 500; }
+  td.n, th.n { text-align: right; }
+  tfoot td { font-weight: 600; border-bottom: none; }
+  .nota-t { color: var(--text-3); font-size: 12px; }
+  .faltan { background: color-mix(in srgb, var(--text-3) 10%, var(--surface)); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: var(--text-2); margin-top: 12px; }
+  .vacio { color: var(--text-3); padding: 30px 0; text-align: center; }
+  footer { margin-top: 20px; color: var(--text-3); font-size: 12px; }
+
+  @media (max-width: 1000px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 800px) { .c5, .c7 { grid-column: span 12; } .marca .tit { text-align: left; } }
+  @media (max-width: 520px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<header class="marca">
+  <div class="in">
+    <img src="__LOGO__" alt="MiradorTEC">
+    <div class="tit"><h1>Coworking · puestos</h1><div class="sub" id="meta"></div></div>
+  </div>
+  <div class="linea"></div>
+</header>
+
+<div class="wrap">
+  <div class="filtros" role="group" aria-label="Filtrar por ocupante">
+    <span class="etq">Ocupante</span><span id="f-emp" style="display:contents"></span>
+  </div>
+
+  <section class="kpis">
+    <div class="card kpi"><div class="lbl">Puestos</div><div class="val" id="k-tot"></div><div class="nota">en total</div></div>
+    <div class="card kpi"><div class="lbl">Rentados</div><div class="val" id="k-ren"></div><div class="nota" id="k-ren-n"></div></div>
+    <div class="card kpi"><div class="lbl">Ocupación</div><div class="val" id="k-occ"></div><div class="nota">de los puestos</div></div>
+    <div class="card kpi lib"><div class="lbl">Libres</div><div class="val" id="k-lib"></div><div class="nota">para alquilar</div></div>
+    <div class="card kpi"><div class="lbl">Recaudación mensual</div><div class="val" id="k-ing"></div><div class="nota" id="k-ing-n"></div></div>
+    <div class="card kpi lib"><div class="lbl">Potencial de los libres</div><div class="val" id="k-pot"></div><div class="nota" id="k-pot-n"></div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card c7">
+      <h2>Mapa de puestos</h2>
+      <div class="sub">Cada bloque es un puesto · pasá el mouse para ver el detalle</div>
+      <div class="leyenda"><span style="--c:var(--st-ren)">Rentado</span><span style="--c:var(--st-lib)">Libre</span></div>
+      <div id="mapa"></div>
+    </div>
+    <div class="card c5">
+      <h2>Puestos por ocupante</h2>
+      <div class="sub">Cantidad de puestos y % del total · clic para filtrar</div>
+      <div class="chart" id="g-emp"></div>
+    </div>
+    <div class="card c12">
+      <h2>Detalle por ocupante</h2>
+      <div class="sub">Resumen de puestos rentados por organización</div>
+      <div id="t-emp"></div>
+      <div class="faltan" id="faltan"></div>
+    </div>
+  </section>
+  <footer id="pie"></footer>
+</div>
+
+<script>
+const DATOS = __DATOS__;
+const META = __META__;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const suma = a => a.reduce((s, x) => s + (x || 0), 0);
+const fmt = (x, dec = 0) => x == null || isNaN(x) ? "–" : x.toLocaleString("es-AR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const precioPuesto = x => x.estado !== "Rentado" ? 0 : (x.precio != null ? x.precio : x.cant * META.tarifaRef);
+const esEstimado = x => x.estado === "Rentado" && x.precio == null;
+const ocupante = x => x.estado === "Rentado" ? (x.empresa || "Sin dato") : "Libres";
+
+const TOTALES = new Map();
+for (const x of DATOS) TOTALES.set(ocupante(x), (TOTALES.get(ocupante(x)) || 0) + x.cant);
+const OCUPANTES = [...TOTALES].filter(([k]) => k !== "Libres").sort((a, b) => b[1] - a[1]).map(x => x[0]).concat(TOTALES.has("Libres") ? ["Libres"] : []);
+const sel = new Set();
+const pasa = x => !sel.size || sel.has(ocupante(x));
+
+function alternar(op) {
+  if (op === "Todos") sel.clear();
+  else { sel.has(op) ? sel.delete(op) : sel.add(op); if (sel.size === OCUPANTES.length) sel.clear(); }
+  actualizar();
+}
+function chips() {
+  const c = document.getElementById("f-emp"); c.innerHTML = "";
+  for (const op of ["Todos", ...OCUPANTES]) {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.innerHTML = (op === "Todos" ? "" : `<span class="pt" style="background:var(${op === "Libres" ? "--st-lib" : "--st-ren"})"></span>`) + esc(op);
+    b.setAttribute("aria-pressed", op === "Todos" ? !sel.size : sel.has(op));
+    b.onclick = () => alternar(op);
+    c.appendChild(b);
+  }
+}
+
+function indicadores() {
+  const tot = suma(DATOS.map(x => x.cant));
+  const fs = DATOS;  // los indicadores muestran siempre el total; el filtro resalta mapa, gráfico y tabla
+  const ren = suma(fs.filter(x => x.estado === "Rentado").map(x => x.cant));
+  const lib = suma(fs.filter(x => x.estado === "Libre").map(x => x.cant));
+  const totF = ren + lib;
+  const rens = fs.filter(x => x.estado === "Rentado");
+  const ing = suma(rens.map(precioPuesto));
+  const est = suma(rens.filter(esEstimado).map(x => x.cant));
+  const orgs = new Set(fs.filter(x => x.estado === "Rentado").map(ocupante)).size;
+  document.getElementById("k-tot").textContent = fmt(totF);
+  document.getElementById("k-ren").textContent = fmt(ren);
+  document.getElementById("k-ren-n").textContent = `${orgs} ocupante${orgs === 1 ? "" : "s"}`;
+  document.getElementById("k-occ").innerHTML = `${pct(ren, totF)}<small>%</small>`;
+  document.getElementById("k-lib").textContent = fmt(lib);
+  document.getElementById("k-ing").innerHTML = `${est ? "~" : ""}${fmt(ing)}<small>MTEC</small>`;
+  document.getElementById("k-ing-n").textContent = !est ? "por mes"
+    : est === ren ? `por mes · estimado: ${fmt(ren)} × ${fmt(META.tarifaRef)}` : `por mes · ${fmt(est)} puestos estimados a ${fmt(META.tarifaRef)}`;
+  document.getElementById("k-pot").innerHTML = `${fmt(lib * META.tarifaRef)}<small>MTEC</small>`;
+  document.getElementById("k-pot-n").textContent = `por mes · a ${fmt(META.tarifaRef)} por puesto`;
+}
+
+function mapa() {
+  document.getElementById("mapa").innerHTML = `<div class="asientos">` + DATOS.map(x =>
+    `<div class="asiento${pasa(x) ? "" : " off"}" style="--c:var(${x.estado === "Rentado" ? "--st-ren" : "--st-lib"})" ` +
+    `title="${esc(x.codigo)} · ${x.estado}${x.empresa ? " · " + esc(x.empresa) : ""}${x.cant > 1 ? " · " + x.cant + " puestos" : ""}${x.precio ? " · " + fmt(x.precio) + " MTEC/mes" : ""}">` +
+    `<span class="u">${esc(x.codigo) || "–"}${x.cant > 1 ? ` ×${x.cant}` : ""}</span><span class="i">${esc(x.empresa || "Libre")}</span></div>`).join("") + `</div>`;
+}
+
+function grafico() {
+  const tot = suma(DATOS.map(x => x.cant));
+  const items = OCUPANTES.map(k => [k, TOTALES.get(k)]);
+  Plotly.react("g-emp", [{
+    type: "bar", orientation: "h", y: items.map(x => x[0]), x: items.map(x => x[1]),
+    marker: { color: items.map(x => (sel.size && !sel.has(x[0])) ? css("--grid") : css(x[0] === "Libres" ? "--st-lib" : "--st-ren")) },
+    text: items.map(x => `${x[1]} · ${pct(x[1], tot)} %`), textposition: "outside", cliponaxis: false, textfont: { color: css("--text"), size: 12 },
+    hovertemplate: "<b>%{y}</b><br>%{x} puestos<extra></extra>",
+  }], {
+    margin: { l: 10, r: 70, t: 4, b: 8 }, bargap: 0.3, showlegend: false,
+    paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
+    font: { family: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", size: 12, color: css("--text-2") },
+    hoverlabel: { bgcolor: css("--surface"), bordercolor: css("--border"), font: { color: css("--text"), size: 12 } },
+    xaxis: { showticklabels: false, showgrid: false, zeroline: false, fixedrange: true, range: [0, Math.max(...items.map(x => x[1]), 1) * 1.3] },
+    yaxis: { autorange: "reversed", showgrid: false, fixedrange: true, automargin: true, tickfont: { color: css("--text"), size: 12 } },
+  }, { displayModeBar: false, responsive: true });
+  const el = document.getElementById("g-emp");
+  el.removeAllListeners?.("plotly_click");
+  el.on("plotly_click", ev => alternar(ev.points[0].y));
+  el.style.cursor = "pointer";
+}
+
+function tabla() {
+  const tot = suma(DATOS.map(x => x.cant));
+  const filas = OCUPANTES.filter(k => k !== "Libres").filter(k => !sel.size || sel.has(k)).map(k => {
+    const xs = DATOS.filter(x => ocupante(x) === k);
+    return { k, n: suma(xs.map(x => x.cant)), cods: xs.map(x => x.codigo), ing: suma(xs.map(precioPuesto)), est: xs.some(esEstimado) };
+  });
+  const el = document.getElementById("t-emp");
+  if (!filas.length) { el.innerHTML = '<div class="vacio">No hay puestos rentados para este filtro</div>'; }
+  else el.innerHTML = `<table><thead><tr><th>Ocupante</th><th class="n">Puestos</th><th class="n">% del total</th><th>Códigos</th><th class="n">MTEC / mes</th></tr></thead><tbody>` +
+    filas.map(f => `<tr><td>${esc(f.k)}</td><td class="n">${f.n}</td><td class="n">${pct(f.n, tot)} %</td><td class="nota-t">${esc(f.cods.join(", "))}</td>` +
+      `<td class="n">${f.est ? '<span class="nota-t">~</span>' : ""}${fmt(f.ing)}</td></tr>`).join("") +
+    `</tbody><tfoot><tr><td>Total rentados</td><td class="n">${suma(filas.map(f => f.n))}</td><td class="n">${pct(suma(filas.map(f => f.n)), tot)} %</td><td></td>` +
+    `<td class="n">${filas.some(f => f.est) ? "~" : ""}${fmt(suma(filas.map(f => f.ing)))}</td></tr></tfoot></table>` +
+    (filas.some(f => f.est) ? `<div class="nota-t" style="margin-top:8px">~ estimado: los puestos sin precio cargado se calculan a ${fmt(META.tarifaRef)} MTEC por mes (tarifa de coworking del tarifario).</div>` : "");
+
+  const f = META.faltan, falt = [];
+  if (f.cant) falt.push(`la <b>cantidad de puestos</b> en ${f.cant} filas (mientras tanto se cuenta 1 por fila)`);
+  if (f.precio) falt.push(f.hayColumnaPrecio ? `el <b>precio</b> en ${f.precio} puestos rentados (mientras tanto se estiman a ${fmt(META.tarifaRef)} MTEC)` : `una columna <b>Precio</b> con lo que paga cada puesto por mes (mientras tanto la recaudación se estima a ${fmt(META.tarifaRef)} MTEC por puesto)`);
+  document.getElementById("faltan").innerHTML = falt.length
+    ? `Para completar en <code>data/coworking.csv</code>: ${falt.join(" y ")}. El potencial de los libres usa la tarifa mensual de coworking del tarifario (${fmt(META.tarifaRef)} MTEC por puesto).`
+    : "La planilla de coworking está completa.";
+}
+
+function actualizar() {
+  chips();
+  for (const fn of [indicadores, mapa, grafico, tabla]) { try { fn(); } catch (e) { console.error(e); } }
+}
+document.getElementById("meta").textContent = `${fmt(suma(DATOS.map(x => x.cant)))} puestos · Actualizado ${META.actualizado}`;
+document.getElementById("pie").textContent = "Datos de data/coworking.csv. El tablero se regenera automáticamente al actualizar el archivo.";
+actualizar();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", actualizar);
+let t; addEventListener("resize", () => { clearTimeout(t); t = setTimeout(actualizar, 250); });
+</script>
+</body>
+</html>
