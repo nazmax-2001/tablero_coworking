@@ -1,0 +1,24 @@
+circuito,orden,localidad,permanencia
+1,1,Gualeguaychú,8:30 a 10:30
+1,2,Gualeguay,11:00 a 12:00
+1,3,Victoria,13:00 a 15:00
+2,1,Concepción del Uruguay,8:30 a 10:30
+2,2,Urdinarrain,11:30 a 12:30
+2,3,Rosario del Tala,13:30 a 15:30
+3,1,Concordia,8:00 a 10:00
+3,2,Colón,11:30 a 13:30
+3,3,Villaguay,14:30 a 16:30
+4,1,Chajarí,8:30 a 10:30
+4,2,San José de Feliciano,12:30 a 14:30
+4,3,La Paz,15:30 a 17:30
+5,1,Federal,8:30 a 10:30
+5,2,Sauce de Luna,11:15 a 13:00
+5,3,Bovril,14:00 a 16:00
+6,1,Crespo,
+6,2,Villa Libertador San Martín,
+6,3,General Ramírez,
+7,1,Nogoyá,
+7,2,Diamante,
+7,3,Viale,
+7,4,Cerrito,
+7,5,María Grande,
